@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./App.css";
 
 function App() {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/leaderboard")
-      .then((res) => {
-        setPlayers(res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching leaderboard:", err);
-      });
+    fetchLeaderboard();
   }, []);
+
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/leaderboard");
+      setPlayers(response.data);
+    } catch (error) {
+      console.error("Error fetching leaderboard:", error);
+    }
+  };
+
+  const getMedal = (rank) => {
+    if (rank === 1) return "🥇";
+    if (rank === 2) return "🥈";
+    if (rank === 3) return "🥉";
+    return rank;
+  };
 
   return (
     <div className="container mt-5">
+      ```
       <h1 className="text-center mb-4">🏆 Leaderboard</h1>
-
-      <table className="table table-hover shadow">
+      <table className="table table-striped table-bordered text-center">
         <thead className="table-dark">
           <tr>
             <th>Rank</th>
-            <th>Player</th>
+            <th>Name</th>
             <th>Score</th>
           </tr>
         </thead>
@@ -31,38 +41,26 @@ function App() {
         <tbody>
           {players.map((player) => (
             <tr key={player.id}>
-              <td>
-                {player.rank === 1 && "🥇"}
-                {player.rank === 2 && "🥈"}
-                {player.rank === 3 && "🥉"}#{player.rank}
-              </td>
-
-              <td>
-                <img
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${player.name}`}
-                  alt="avatar"
-                  width="35"
-                  style={{ marginRight: "10px" }}
-                />
-
-                {player.name}
-              </td>
-
-              <td style={{ width: "200px" }}>
-                <div className="progress">
-                  <div
-                    className="progress-bar bg-success"
-                    role="progressbar"
-                    style={{ width: `${player.score}%` }}
-                  >
-                    {player.score}
-                  </div>
-                </div>
-              </td>
+              <td>{getMedal(player.rank)}</td>
+              <td>{player.name}</td>
+              <td>{player.score}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      {/* Watermark */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "10px",
+          right: "20px",
+          opacity: "0.6",
+          fontSize: "14px",
+          fontWeight: "bold",
+        }}
+      >
+        This project is developed by Lokanath
+      </div>
     </div>
   );
 }
