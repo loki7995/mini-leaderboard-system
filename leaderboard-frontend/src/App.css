@@ -44,3 +44,17 @@ body {
 .score {
   color: #764ba2;
 }
+
+.progress {
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 12px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border-radius: 10px;
+  transition: width 0.8s ease-in-out;
+}
