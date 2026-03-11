@@ -9,33 +9,23 @@ function App() {
   const [name, setName] = useState("");
   const [score, setScore] = useState("");
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     fetchLeaderboard();
-
-    ```
-const interval = setInterval(() => {
-  fetchLeaderboard();
-}, 5000);
-
-return () => clearInterval(interval);
-```;
   }, []);
 
   const fetchLeaderboard = async () => {
     try {
-      const res = await axios.get(`${API}/leaderboard`);
+      const res = await axios.get(`${API}/leaderboard/`);
       setPlayers(res.data);
-      setLoading(false);
     } catch (err) {
-      console.error(err);
+      console.error("Error loading leaderboard", err);
     }
   };
 
   const addPlayer = async () => {
     if (!name || !score) return;
+
     try {
       await axios.post(`${API}/leaderboard/add`, null, {
         params: {
@@ -48,7 +38,7 @@ return () => clearInterval(interval);
       setScore("");
       fetchLeaderboard();
     } catch (err) {
-      console.error(err);
+      console.error("Error adding player", err);
     }
   };
 
@@ -57,7 +47,7 @@ return () => clearInterval(interval);
       await axios.delete(`${API}/leaderboard/delete/${id}`);
       fetchLeaderboard();
     } catch (err) {
-      console.error(err);
+      console.error("Delete error", err);
     }
   };
 
@@ -72,124 +62,111 @@ return () => clearInterval(interval);
     p.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const maxScore = Math.max(...players.map((p) => p.score), 100);
-
-  const podium = players.slice(0, 3);
+  const maxScore =
+    players.length > 0 ? Math.max(...players.map((p) => p.score)) : 100;
 
   return (
-    <div className={darkMode ? "dark app-container" : "app-container"}>
-      {" "}
-      <h1 className="title">🏆 Leaderboard</h1>
+    <div className="container mt-5">
       ```
-      <button
-        className="btn btn-secondary mb-3"
-        onClick={() => setDarkMode(!darkMode)}
-      >
-        {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-      </button>
-      <div className="podium">
-        {podium.map((p) => (
-          <div key={p.id} className="podium-card">
-            <h3>{getMedal(p.rank)}</h3>
-            <img
-              src={`https://api.dicebear.com/7.x/initials/svg?seed=${p.name}`}
-              alt="avatar"
-              width="60"
-            />
-            <p>{p.name}</p>
-            <strong>{p.score}</strong>
-          </div>
-        ))}
-      </div>
-      <div className="controls">
+      <h1 className="text-center mb-4">🏆 Leaderboard</h1>
+      <div className="mb-3">
         <input
           placeholder="Search player..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="form-control"
         />
-
-        <button onClick={fetchLeaderboard} className="btn btn-primary">
-          🔄 Refresh
-        </button>
       </div>
-      <div className="add-form">
-        <input
-          placeholder="Player Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <div className="row mb-4">
+        <div className="col">
+          <input
+            placeholder="Player Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="form-control"
+          />
+        </div>
 
-        <input
-          placeholder="Score"
-          type="number"
-          value={score}
-          onChange={(e) => setScore(e.target.value)}
-        />
+        <div className="col">
+          <input
+            type="number"
+            placeholder="Score"
+            value={score}
+            onChange={(e) => setScore(e.target.value)}
+            className="form-control"
+          />
+        </div>
 
-        <button onClick={addPlayer} className="btn btn-success">
-          Add Player
-        </button>
+        <div className="col">
+          <button onClick={addPlayer} className="btn btn-success w-100">
+            Add Player
+          </button>
+        </div>
       </div>
-      {loading ? (
-        <h2 className="loading">Loading leaderboard...</h2>
-      ) : (
-        <table className="table leaderboard-table">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Avatar</th>
-              <th>Name</th>
-              <th>Score</th>
-              <th>Progress</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+      <table className="table table-bordered text-center">
+        <thead className="table-dark">
+          <tr>
+            <th>Rank</th>
+            <th>Avatar</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Progress</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-          <tbody>
-            {filteredPlayers.map((p) => (
-              <tr key={p.id}>
-                <td>{getMedal(p.rank)}</td>
+        <tbody>
+          {filteredPlayers.map((p) => (
+            <tr key={p.id}>
+              <td>{getMedal(p.rank)}</td>
 
-                <td>
-                  <img
-                    src={`https://api.dicebear.com/7.x/initials/svg?seed=${p.name}`}
-                    width="40"
-                    alt="avatar"
+              <td>
+                <img
+                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${p.name}`}
+                  width="40"
+                  alt="avatar"
+                />
+              </td>
+
+              <td>{p.name}</td>
+
+              <td>{p.score}</td>
+
+              <td>
+                <div className="progress">
+                  <div
+                    className="progress-bar bg-success"
+                    style={{
+                      width: `${(p.score / maxScore) * 100}%`,
+                    }}
                   />
-                </td>
+                </div>
+              </td>
 
-                <td>{p.name}</td>
-
-                <td>{p.score}</td>
-
-                <td>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      style={{
-                        width: `${(p.score / maxScore) * 100}%`,
-                      }}
-                    ></div>
-                  </div>
-                </td>
-
-                <td>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => deletePlayer(p.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <h4 className="total">Total Players: {players.length}</h4>
-      <footer className="footer">
-        © 2026 Lokanath | Full Stack Leaderboard System
-      </footer>
+              <td>
+                <button
+                  onClick={() => deletePlayer(p.id)}
+                  className="btn btn-danger btn-sm"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div
+        style={{
+          position: "fixed",
+          bottom: "10px",
+          right: "20px",
+          opacity: "0.6",
+          fontSize: "14px",
+          fontWeight: "bold",
+        }}
+      >
+        This project is developed by Lokanath
+      </div>
     </div>
   );
 }
