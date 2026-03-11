@@ -1,0 +1,17 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Database
+*.db
+
+# React
+node_modules/
+build/
+
+# System
+.DS_Store
