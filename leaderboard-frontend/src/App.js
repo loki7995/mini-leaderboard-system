@@ -96,7 +96,8 @@ function App() {
               borderRadius: "6px",
             }}
           >
-            Created by M.Lokanath | 23FH1A05B1
+            Developed by M Lokanath | 23FH1A05B1 Dr.K.V.SRIT college Student of
+            CSE B
           </div>
 
           <h1 className="text-center mb-4">🏆 Leaderboard</h1>
