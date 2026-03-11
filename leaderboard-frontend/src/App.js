@@ -11,7 +11,9 @@ function App() {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/leaderboard");
+      const response = await axios.get(
+        "https://lokanath-leader-board.onrender.com",
+      );
       setPlayers(response.data);
     } catch (error) {
       console.error("Error fetching leaderboard:", error);
