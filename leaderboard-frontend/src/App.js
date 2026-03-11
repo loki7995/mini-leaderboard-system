@@ -69,7 +69,6 @@ function App() {
     p.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  // Score bar max value
   const maxScore =
     players.length > 0 ? Math.max(...players.map((p) => p.score)) : 100;
 
@@ -79,8 +78,29 @@ function App() {
         darkMode ? "bg-dark text-white min-vh-100 p-4" : "min-vh-100 p-4"
       }
     >
+      ```
       <div className="container">
-        <h1 className="text-center mb-4">🏆 Leaderboard</h1>
+        {/* HEADER WITH WATERMARK */}
+
+        <div style={{ position: "relative" }}>
+          <div
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "0",
+              fontSize: "14px",
+              fontWeight: "600",
+              opacity: "0.8",
+              padding: "6px 10px",
+              background: "rgba(0,0,0,0.2)",
+              borderRadius: "6px",
+            }}
+          >
+            Created by M.Lokanath | 23FH1A05B1
+          </div>
+
+          <h1 className="text-center mb-4">🏆 Leaderboard</h1>
+        </div>
 
         {/* DARK MODE BUTTON */}
 
@@ -201,21 +221,6 @@ function App() {
             ))}
           </tbody>
         </table>
-
-        {/* WATERMARK */}
-
-        <div
-          style={{
-            position: "fixed",
-            bottom: "10px",
-            right: "20px",
-            opacity: "0.6",
-            fontSize: "14px",
-            fontWeight: "bold",
-          }}
-        >
-          This project is developed by Lokanath
-        </div>
       </div>
     </div>
   );
