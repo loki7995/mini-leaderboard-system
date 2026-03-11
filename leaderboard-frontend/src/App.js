@@ -14,6 +14,12 @@ function App() {
 
   useEffect(() => {
     fetchLeaderboard();
+
+    const interval = setInterval(() => {
+      fetchLeaderboard();
+    }, 5000); // refresh every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchLeaderboard = async () => {
