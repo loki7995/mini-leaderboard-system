@@ -15,11 +15,13 @@ function App() {
   useEffect(() => {
     fetchLeaderboard();
 
-    const interval = setInterval(() => {
-      fetchLeaderboard();
-    }, 5000); // refresh every 5 seconds
+    ```
+const interval = setInterval(() => {
+  fetchLeaderboard();
+}, 5000);
 
-    return () => clearInterval(interval);
+return () => clearInterval(interval);
+```;
   }, []);
 
   const fetchLeaderboard = async () => {
@@ -34,7 +36,6 @@ function App() {
 
   const addPlayer = async () => {
     if (!name || !score) return;
-
     try {
       await axios.post(`${API}/leaderboard/add`, null, {
         params: {
@@ -45,6 +46,15 @@ function App() {
 
       setName("");
       setScore("");
+      fetchLeaderboard();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const deletePlayer = async (id) => {
+    try {
+      await axios.delete(`${API}/leaderboard/delete/${id}`);
       fetchLeaderboard();
     } catch (err) {
       console.error(err);
@@ -68,8 +78,9 @@ function App() {
 
   return (
     <div className={darkMode ? "dark app-container" : "app-container"}>
-      ```
+      {" "}
       <h1 className="title">🏆 Leaderboard</h1>
+      ```
       <button
         className="btn btn-secondary mb-3"
         onClick={() => setDarkMode(!darkMode)}
@@ -130,6 +141,7 @@ function App() {
               <th>Name</th>
               <th>Score</th>
               <th>Progress</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -159,6 +171,15 @@ function App() {
                       }}
                     ></div>
                   </div>
+                </td>
+
+                <td>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => deletePlayer(p.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
