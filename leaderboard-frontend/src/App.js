@@ -12,7 +12,7 @@ function App() {
   const fetchLeaderboard = async () => {
     try {
       const response = await axios.get(
-        "https://lokanath-leader-board.onrender.com",
+        "https://lokanath-leader-board.onrender.com/leaderboard",
       );
       setPlayers(response.data);
     } catch (error) {
@@ -29,8 +29,8 @@ function App() {
 
   return (
     <div className="container mt-5">
-      ```
       <h1 className="text-center mb-4">🏆 Leaderboard</h1>
+
       <table className="table table-striped table-bordered text-center">
         <thead className="table-dark">
           <tr>
@@ -50,7 +50,7 @@ function App() {
           ))}
         </tbody>
       </table>
-      {/* Watermark */}
+
       <div
         style={{
           position: "fixed",
