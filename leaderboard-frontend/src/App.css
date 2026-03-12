@@ -58,3 +58,90 @@ body {
   border-radius: 10px;
   transition: width 0.8s ease-in-out;
 }
+
+.app {
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+}
+
+.dark {
+  background: #111;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.watermark {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 5px;
+}
+
+.center {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.top-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  margin-bottom: 20px;
+}
+
+.player-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .player-form {
+    flex-direction: column;
+  }
+}
+
+.podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.podium-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  width: 120px;
+}
+
+.place-1 {
+  transform: scale(1.1);
+  background: #ffd70033;
+}
+
+.place-2 {
+  background: #c0c0c033;
+}
+
+.place-3 {
+  background: #cd7f3233;
+}
+
+.medal {
+  font-size: 28px;
+  margin-bottom: 5px;
+}
